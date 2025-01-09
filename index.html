@@ -1,1 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Validator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 600px;
+        }
+    </style>
+    <script>
+        const ids = {
+            "202501011234JOHN": "John Doe",
+            "202501021234JANE": "Jane Smith"
+            // Add more IDs and corresponding names here
+        };
 
+        function validateID() {
+            const userID = document.getElementById('userID').value.trim().toUpperCase();
+            const resultDiv = document.getElementById('result');
+
+            if (ids.hasOwnProperty(userID)) {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-success mt-3" role="alert">
+                        ID valid. Name: ${ids[userID]}<br>
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="alert alert-danger mt-3" role="alert">
+                        ID not valid.
+                    </div>
+                `;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">ID Validator</h1>
+        <form onsubmit="event.preventDefault(); validateID();">
+            <div class="form-group">
+                <label for="userID">Enter your ID:</label>
+                <input type="text" class="form-control" id="userID" name="userID" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Validate ID</button>
+        </form>
+        <div id="result"></div>
+    </div>
+</body>
+</html>
