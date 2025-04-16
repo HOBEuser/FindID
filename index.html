@@ -3,54 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ID Validator</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            padding-top: 50px;
-        }
-        .container {
-            max-width: 600px;
-        }
-    </style>
-    <script>
-        const ids = {
-            "202501011234JOHN": "John Doe",
-            "202501021234JANE": "Jane Smith"
-            // Add more IDs and corresponding names here
-        };
-
-        function validateID() {
-            const userID = document.getElementById('userID').value.trim().toUpperCase();
-            const resultDiv = document.getElementById('result');
-
-            if (ids.hasOwnProperty(userID)) {
-                resultDiv.innerHTML = `
-                    <div class="alert alert-success mt-3" role="alert">
-                        ID valid. Name: ${ids[userID]}<br>
-                    </div>
-                `;
-            } else {
-                resultDiv.innerHTML = `
-                    <div class="alert alert-danger mt-3" role="alert">
-                        ID not valid.
-                    </div>
-                `;
-            }
-        }
-    </script>
+    <title>Supabase Insert Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">ID Validator</h1>
-        <form onsubmit="event.preventDefault(); validateID();">
-            <div class="form-group">
-                <label for="userID">Enter your ID:</label>
-                <input type="text" class="form-control" id="userID" name="userID" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Validate ID</button>
-        </form>
-        <div id="result"></div>
-    </div>
+    <h1>Add Data to Supabase Table</h1>
+    <form id="dataForm">
+        <input type="text" id="dataInput" placeholder="Enter data" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <script>
+        // Initialize Supabase
+        const { createClient } = supabase;
+        const supabaseUrl = 'YOUR_SUPABASE_URL';
+        const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        // Function to insert data
+        async function insertData(data) {
+            const { data: insertedData, error } = await supabase
+                .from('your_table_name')
+                .insert([{ column_name: data }]);
+
+            if (error) {
+                console.error('Error inserting data:', error);
+            } else {
+                console.log('Data inserted:', insertedData);
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('dataForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const data = document.getElementById('dataInput').value;
+            insertData(data);
+        });
+    </script>
 </body>
 </html>
